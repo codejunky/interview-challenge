@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const next = require('next')
 
 const port = parseInt(process.env.PORT, 10) || 3000
@@ -9,9 +10,16 @@ const handle = app.getRequestHandler()
 app.prepare().then(() => {
   const server = express()
 
-  server.get('/a', (req, res) => {
-    return app.render(req, res, '/a', req.query)
-  })
+  const bookRoutes = require('./routes/books')
+  const authorRoutes = require('./routes/authors')
+
+  server.use(bodyParser.json())
+  server.use('/api', bookRoutes(app))
+  server.use('/api', authorRoutes(app))
+
+  // server.get('/a', (req, res) => {
+
+  // })
 
   server.get('/b', (req, res) => {
     return app.render(req, res, '/b', req.query)
