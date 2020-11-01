@@ -1,3 +1,5 @@
+import 'isomorphic-unfetch'
+
 import NavBar from '../components/NavBar'
 
 const MyApp = ({ Component, pageProps }) => {

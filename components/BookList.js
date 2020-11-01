@@ -1,6 +1,6 @@
 import BookCard from './BookCard'
 
-const BookList = () => {
+const BookList = ({ books }) => {
   return (
     <div className="list-container">
       <BookCard />
