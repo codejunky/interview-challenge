@@ -2,14 +2,16 @@
   "name": "book-list-challenge",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon backend/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon backend/index.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js"
+    "start": "cross-env NODE_ENV=production node backend/index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-validator": "^6.6.1",
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
