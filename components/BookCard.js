@@ -1,22 +1,28 @@
+import Link from 'next/link'
+
 import bookCover from '../assets/images/book_cover.png'
 
-const BookCard = () => {
+const BookCard = ({ id, name }) => {
   return (
     <div className="card-container">
-      <div className="cover-container">
-        <img src={bookCover} alt="Book cover" />
-      </div>
-      <span className="book-title">
-        Title Here
-      </span>
+      <Link href={`/books/${id}`}>
+        <a className="cover-link">
+          <div className="cover-container">
+            <img src={bookCover} alt="Book cover" />
+          </div>
+          <span className="book-title">
+            {name}
+          </span>
+        </a>
+      </Link>
 
       <style jsx>{`
         .card-container {
           display: flex;
           flex-direction: column;
-          width: 22%;
-          height: 300px;
-          margin-right: 25px;
+          width: 23%;
+          height: 320px;
+          margin-right: 15px;
           margin-bottom: 30px;
         }
 
@@ -24,7 +30,7 @@ const BookCard = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          height: 95%;
+          height: 85%;
           border-radius: 10px;
           box-shadow: 1px 1px 2px 1px #eee;
           background-color: rgba(200, 200, 200, 0.2);
@@ -32,15 +38,19 @@ const BookCard = () => {
         }
         
         .cover-container img {
-          max-width: 85%;
-          max-height: 85%;
+          max-width: 70%;
+        }
+
+        .cover-link {
+          text-decoration: none;
+          height: 100%;
         }
 
         .book-title {
-          font-size: 18px;
+          display: block;
+          font-size: 16px;
           font-weight: 400;
           color: #888;
-          text-transform: uppercase;
         }
       `}</style>
     </div>

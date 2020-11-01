@@ -17,7 +17,7 @@ const SearchBox = () => {
         
         input[type="text"] {
           width: 100%;
-          height: 40px;
+          height: 5vh;
           padding: 5px 10px 5px 50px;
           outline: none;
           border: none;

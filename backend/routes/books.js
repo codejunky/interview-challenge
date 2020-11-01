@@ -8,7 +8,7 @@ const { Book, Author } = require('../models')
 
 const bookRoutes = (app) => {
   router.get('/books', async (req, res) => {
-    const books = await Book.findAll({ include: ['author'] })
+    const books = await Book.findAll()
     return res.json(books)
   })
 
@@ -41,7 +41,7 @@ const bookRoutes = (app) => {
     const { id } = req.params
 
     const book = await Book.findByPk(id, {
-      attributes: ['id', 'name', 'isbn'],
+      attributes: ['id', 'name', 'isbn', 'description'],
       include: [{ model: Author, as: 'author', attributes: ['id', 'firstName', 'lastName'] }]
     })
 

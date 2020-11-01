@@ -10,6 +10,7 @@ const NavBar = () => {
           display: flex;
           align-items: center;
           justify-content: space-between;
+          height: 10vh;
         }
 
         h1 {
