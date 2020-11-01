@@ -1,20 +1,14 @@
 import Link from 'next/link'
 
+import BookList from '../components/BookList'
+
 export default function Home() {
   return (
     <div className="container">
-      <ul>
-        <li>
-          <Link href="/a">
-            <a>a</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/b">
-            <a>b</a>
-          </Link>
-        </li>
-      </ul>
+      <div className="main-container">
+        <h3>Available Books</h3>
+        <BookList />
+      </div>
       <style jsx global>{`
         html,
         body {
