@@ -14,7 +14,7 @@ module.exports = {
       isbn: {
         type: Sequelize.STRING
       },
-      author: {
+      authorId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

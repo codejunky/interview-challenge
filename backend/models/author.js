@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Author extends Model {
     static associate(models) {
       Author.hasMany(models.Book, {
-        foreignKey: 'author',
+        as: 'books',
         onDelete: 'CASCADE'
       })
     }
