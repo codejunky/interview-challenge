@@ -19,6 +19,9 @@ const bookRoutes = (app) => {
       body('isbn')
         .isISBN()
         .withMessage('A valid ISBN is required'),
+      body('description')
+        .isLength({ min: 100 })
+        .withMessage('Please provide a meaningful description for the book'),
       body('authorId')
         .isNumeric({ gt: 0 })
         .withMessage('Please select a valid author'),
@@ -26,9 +29,9 @@ const bookRoutes = (app) => {
     ],
     validateRequest,
     async (req, res) => {
-      const { name, isbn, authorId } = req.body
+      const { name, isbn, description, authorId } = req.body
 
-      const newBook = await Book.create({ name, isbn, authorId })
+      const newBook = await Book.create({ name, isbn, description, authorId })
       return res
         .status(201)
         .json(newBook);
@@ -56,6 +59,9 @@ const bookRoutes = (app) => {
       body('isbn')
         .isISBN()
         .withMessage('A valid ISBN is required'),
+      body('description')
+        .isLength({ min: 100 })
+        .withMessage('Please provide a meaningful description for the book'),
       body('authorId')
         .isNumeric({ gt: 0 })
         .withMessage('Please select a valid author'),
@@ -71,9 +77,10 @@ const bookRoutes = (app) => {
         throw new NotFoundError('Book does not exist!')
       }
 
-      const { name, isbn, authorId } = req.body
+      const { name, isbn, description, authorId } = req.body
       book.name = name
       book.isbn = isbn
+      book.description = description
       book.authorId = authorId
       book.save()
 
