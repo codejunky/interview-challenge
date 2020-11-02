@@ -15,12 +15,7 @@ const AuthorsPage = ({ authors }) => {
                 <div className="author-header">
                   <h4>{`${firstName} ${lastName}`}</h4>
                   <button
-                    onClick={() => {
-                      router.push({
-                        pathname: `/authors/${id}`,
-                        query: { author: JSON.stringify(author) }
-                      })
-                    }}
+                    onClick={() => router.push(`/authors/${id}`)}
                     className="edit-btn"
                   >
                     Edit
