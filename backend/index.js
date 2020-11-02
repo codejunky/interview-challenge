@@ -19,10 +19,6 @@ app.prepare().then(async () => {
   server.use('/api', bookRoutes(app))
   server.use('/api', authorRoutes(app))
 
-  server.get('/b', (req, res) => {
-    return app.render(req, res, '/b', req.query)
-  })
-
   server.all('*', (req, res) => {
     return handle(req, res)
   })
