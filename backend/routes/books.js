@@ -15,7 +15,9 @@ const bookRoutes = (app) => {
         name: {
           [Op.like]: `%${search || ''}%`
         }
-      }
+      },
+      attributes: ['name', 'isbn', 'id'],
+      include: ['author']
     })
 
     if (search && !books.length) {
@@ -38,7 +40,7 @@ const bookRoutes = (app) => {
         }]
       })
 
-      books = author.books;
+      books = author?.books || [];
     }
     return res.json(books)
   })
