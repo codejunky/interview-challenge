@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { body } = require('express-validator')
+const { Op } = require('sequelize')
 
 const validateRequest = require('../middlewares/validate-request')
 const NotFoundError = require('../errors/not-found-error')
@@ -8,7 +9,37 @@ const { Book, Author } = require('../models')
 
 const bookRoutes = (app) => {
   router.get('/books', async (req, res) => {
-    const books = await Book.findAll()
+    const { search } = req.query
+    let books = await Book.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${search || ''}%`
+        }
+      }
+    })
+
+    if (search && !books.length) {
+      const author = await Author.findOne({
+        where: {
+          [Op.or]: {
+            firstName: {
+              [Op.like]: `%${search}%`
+            },
+            lastName: {
+              [Op.like]: `%${search}%`
+            }
+          }
+        },
+        include: [{
+          model: Book,
+          as: 'books',
+          attributes: ['name', 'isbn', 'description'],
+          include: ['author']
+        }]
+      })
+
+      books = author.books;
+    }
     return res.json(books)
   })
 
