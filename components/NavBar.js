@@ -23,6 +23,11 @@ const NavBar = () => {
               Home
             </a>
           </Link>
+          <Link href="/authors">
+            <a className={`menu-item ${isActive('/authors') ? 'selected' : ''}`}>
+              Authors
+            </a>
+          </Link>
           <Link href="/books/add">
             <a className={`menu-item ${isActive('/books/add') ? 'selected' : ''}`}>
               Add book

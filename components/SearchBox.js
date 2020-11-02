@@ -1,7 +1,6 @@
 import { FiSearch } from 'react-icons/fi'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import _ from 'lodash'
 
 import book_cover from '../assets/images/book_cover.png'
 
@@ -18,7 +17,6 @@ const SearchBox = () => {
 
       if (req.status === 200) {
         const books = await req.json()
-        console.log("Results => ", books)
         setResults(books)
         setShowResults(true)
       }

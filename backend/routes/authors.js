@@ -8,7 +8,10 @@ const NotFoundError = require('../errors/not-found-error')
 
 const authorRoutes = (app) => {
   router.get('/authors', async (req, res) => {
-    const authors = await Author.findAll()
+    const { books } = req.query
+    const authors = await Author.findAll({
+      include: books === 'yes' ? ['books'] : []
+    })
     return res.json(authors)
   })
 

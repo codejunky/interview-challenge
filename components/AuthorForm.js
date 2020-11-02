@@ -3,10 +3,10 @@ import isEmpty from 'validator/lib/isEmpty'
 
 import ErrorMessage from './ErrorMessage'
 
-const AuthorForm = ({ onSubmit }) => {
+const AuthorForm = ({ onSubmit, author = {} }) => {
   const [authorAttrs, setAuthorAttrs] = useState({
-    firstName: '',
-    lastName: ''
+    firstName: author.firstName || '',
+    lastName: author.lastName || ''
   })
 
   const [errors, setErrors] = useState({
