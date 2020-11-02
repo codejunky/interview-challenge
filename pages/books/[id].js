@@ -1,8 +1,38 @@
 import Link from 'next/link'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
+import BookForm from '../../components/BookForm'
+import ErrorMessage from '../../components/ErrorMessage'
 import book_cover from '../../assets/images/book_cover.png'
 
-const BookPage = ({ book }) => {
+const BookPage = ({ book, authors }) => {
+  const router = useRouter()
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [formError, setFormError] = useState('')
+
+  const updateBook = async (name, isbn, authorId, description) => {
+    const req = await fetch(`http://localhost:3000/api/books/${book.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        isbn,
+        authorId,
+        description
+      })
+    })
+
+    if (req.status === 200) {
+      const updatedBook = await req.json();
+      setShowEditForm(false)
+      setFormError('')
+      router.push(`/books/${updatedBook.id}`)
+    } else {
+      setFormError(req.statusText)
+    }
+  }
+
   return (
     <div className="page-container">
       <div className="details-container">
@@ -19,6 +49,14 @@ const BookPage = ({ book }) => {
           <p className="book-desc">
             {book.description}
           </p>
+
+          <button onClick={() => setShowEditForm(!showEditForm)} className="btn">Edit Book</button>
+          {showEditForm && (
+            <>
+              <BookForm authors={authors} book={book} onSubmit={updateBook} />
+              {formError && <ErrorMessage message={formError} />}
+            </>
+          )}
         </div>
       </div>
       <Link href="/">
@@ -91,6 +129,18 @@ const BookPage = ({ book }) => {
           color: #777;
           margin-top: 15px;
         }
+
+        .btn {
+          width: 10vw;
+          padding: 10px;
+          outline: none;
+          border-radius: 5px;
+          border: none;
+          cursor: pointer;
+          background-color: #0096c7;
+          color: #fff;
+          margin-bottom: 10px;
+        }
       `}</style>
     </div>
   )
@@ -98,9 +148,17 @@ const BookPage = ({ book }) => {
 
 export const getServerSideProps = async ({ params: { id } }) => {
   const req = await fetch(`http://localhost:3000/api/books/${id}`)
+  const req2 = await fetch(`http://localhost:3000/api/authors`)
   const book = await req.json()
+  let authors = await req2.json()
 
-  return { props: { book } }
+  authors = authors.map(({ id, firstName, lastName }) => ({
+    id,
+    name: `${firstName} ${lastName}`
+  }))
+
+
+  return { props: { book, authors } }
 }
 
 export default BookPage

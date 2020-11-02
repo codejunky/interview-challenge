@@ -7,13 +7,13 @@ import isLength from 'validator/lib/isLength'
 import AuthorForm from './AuthorForm'
 import ErrorMessage from './ErrorMessage'
 
-const BookForm = ({ authors, onSubmit }) => {
+const BookForm = ({ authors, onSubmit, book = {} }) => {
   const [authorList, setAuthorsList] = useState(authors);
   const [bookAttr, setBookAttr] = useState({
-    name: '',
-    isbn: '',
-    authorId: '',
-    description: ''
+    name: book.name || '',
+    isbn: book.isbn || '',
+    authorId: book.author?.id || '',
+    description: book.description || ''
   })
 
   const [errors, setErrors] = useState({
@@ -136,7 +136,6 @@ const BookForm = ({ authors, onSubmit }) => {
           onBlur={e => validateAttr('authorId')}
           value={authorId}
           name="authorId"
-          required
         >
           <option>Select an author</option>
           {
