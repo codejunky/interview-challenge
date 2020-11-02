@@ -4,9 +4,11 @@ import isEmpty from 'validator/lib/isEmpty'
 import isIn from 'validator/lib/isIn'
 import isLength from 'validator/lib/isLength'
 
+import AuthorForm from './AuthorForm'
 import ErrorMessage from './ErrorMessage'
 
 const BookForm = ({ authors, onSubmit }) => {
+  const [authorList, setAuthorsList] = useState(authors);
   const [bookAttr, setBookAttr] = useState({
     name: '',
     isbn: '',
@@ -20,6 +22,33 @@ const BookForm = ({ authors, onSubmit }) => {
     authorId: '',
     description: ''
   })
+
+  const [formError, setFormError] = useState('')
+
+  const addNewAuthor = async (firstName, lastName) => {
+    const req = await fetch('http://localhost:3000/api/authors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName,
+        lastName
+      })
+    })
+
+    if (req.status === 201) {
+      const author = await req.json()
+      setAuthorsList([
+        ...authorList,
+        { id: author.id, name: `${author.firstName} ${author.lastName}` }
+      ])
+      setShowAuthorForm(false)
+      setFormError('')
+    } else {
+      setFormError(req.statusText)
+    }
+  }
+
+  const [showAuthorForm, setShowAuthorForm] = useState(false)
 
   const validateAttr = attr => {
     let message
@@ -111,12 +140,22 @@ const BookForm = ({ authors, onSubmit }) => {
         >
           <option>Select an author</option>
           {
-            authors.map(({ id, name }) => (
+            authorList.map(({ id, name }) => (
               <option key={id} value={id}>{name}</option>
             ))
           }
         </select>
         {errors.authorId && <ErrorMessage message={errors.authorId} />}
+
+        <span onClick={() => setShowAuthorForm(!showAuthorForm)} className="new-author-btn">
+          New author?
+        </span>
+        {showAuthorForm && (
+          <>
+            <AuthorForm onSubmit={addNewAuthor} />
+            {formError && <ErrorMessage message={formError} />}
+          </>
+        )}
       </div>
       <div className="input-group">
         <label htmlFor="description">Description:</label>
@@ -176,6 +215,13 @@ const BookForm = ({ authors, onSubmit }) => {
           cursor: pointer;
           background-color: #0096c7;
           color: #fff;
+        }
+
+        .new-author-btn {
+          margin: 5px 0 0 0;
+          text-decoration: underline;
+          color: #0096c7;
+          cursor: pointer;
         }
       `}</style>
     </div>
